@@ -6,11 +6,16 @@
 
 <!-- Content Row -->
 <?php if (isset($data['resultado'])) { ?>
+    <div class="col-12 col-lg-6">
+        <div>
+
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="alert alert-success">
                 <table class="table table-striped table-bordered">
-                    <?php foreach ($data['resultado'] as $key => $value) { ?>
+                    <?php foreach ($data['resultado']['tabla'] as $key => $value) { ?>
                         <tr>
                             <th>Asignatura</th>
                             <th><?php echo $key ?></th>
@@ -19,20 +24,15 @@
                             <th>Media</th>
                             <td><?php echo $value['media'] ?></td>
                         <tr>
-                        <th>Suspensos</th>
-                        <?php foreach ($value['suspensos'] as $alumnoSuspenso => $notaSuspenso) { ?>
-                            <tr>
-                                <td><?php echo $alumnoSuspenso . ': ' . $notaSuspenso ?></td>
-                            </tr>
-                        <?php } ?>
+                            <th>Suspensos</th>
+                        <tr>
+                            <td><?php echo count($value['suspensos']) ?></td>
                         </tr>
                         <tr>
-                        <th>Aprobados</th>
-                        <?php foreach ($value['aprobados'] as $alumnoAprobado => $notaAprobado) { ?>
-                            <tr>
-                                <td><?php echo $alumnoAprobado . ': ' . $notaAprobado ?></td>
-                            </tr>
-                        <?php } ?>
+                            <th>Aprobados</th>
+                        <tr>
+                            <td><?php echo count($value['aprobados']) ?></td>
+                        </tr>
                         </tr>
                         <tr>
                             <th>Máxima nota</th>
@@ -43,7 +43,9 @@
                             <td><?php echo $value['min']['alumno'] . ': ' . $value['min']['nota'] ?></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><hr/></td>
+                            <td colspan="2">
+                                <hr/>
+                            </td>
                         </tr>
                     <?php } ?>
                 </table>

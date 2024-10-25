@@ -8,21 +8,21 @@ function analyseData(mixed $data): array
         foreach ($alumnos as $nombreAlumno => $notas) {
             $notaMediaTrimestres[$asignatura][$nombreAlumno] = round(array_sum($notas) / count($notas), 2);
         }
-        $ret[$asignatura]['media'] = array_sum($notaMediaTrimestres[$asignatura]) / count($notaMediaTrimestres[$asignatura]);
-        $ret[$asignatura]['suspensos'] = array_filter($notaMediaTrimestres[$asignatura], function (int $item) {
+        $ret['tabla'][$asignatura]['media'] = array_sum($notaMediaTrimestres[$asignatura]) / count($notaMediaTrimestres[$asignatura]);
+        $ret['tabla'][$asignatura]['suspensos'] = array_filter($notaMediaTrimestres[$asignatura], function (int $item) {
             return $item < 5;
         });
-        $ret[$asignatura]['aprobados'] = array_filter($notaMediaTrimestres[$asignatura], function (int $item) {
+        $ret['tabla'][$asignatura]['aprobados'] = array_filter($notaMediaTrimestres[$asignatura], function (int $item) {
             return $item >= 5;
         });
-        $ret[$asignatura]['max'] = ['alumno' => 'nobody', 'nota' => null];
-        $ret[$asignatura]['min'] = ['alumno' => 'nobody', 'nota' => null];
+        $ret['tabla'][$asignatura]['max'] = ['alumno' => 'nobody', 'nota' => null];
+        $ret['tabla'][$asignatura]['min'] = ['alumno' => 'nobody', 'nota' => null];
         foreach ($notaMediaTrimestres[$asignatura] as $nombreAlumno => $notaMedia) {
-            if ($notaMedia > $ret[$asignatura]['max']['nota'] || $ret[$asignatura]['max']['nota'] === null) {
+            if ($notaMedia > $ret['tabla'][$asignatura]['max']['nota'] || $ret['tabla'][$asignatura]['max']['nota'] === null) {
                 $ret[$asignatura]['max'] = ['alumno' => $nombreAlumno, 'nota' => $notaMedia];
             }
-            if ($notaMedia < $ret[$asignatura]['min']['nota'] || $ret[$asignatura]['min']['nota'] === null) {
-                $ret[$asignatura]['min'] = ['alumno' => $nombreAlumno, 'nota' => $notaMedia];
+            if ($notaMedia < $ret['tabla'][$asignatura]['min']['nota'] || $ret['tabla'][$asignatura]['min']['nota'] === null) {
+                $ret['tabla'][$asignatura]['min'] = ['alumno' => $nombreAlumno, 'nota' => $notaMedia];
             }
         }
     }

@@ -40,7 +40,7 @@
             <div class="alert alert-danger">
                 <p><strong>NO PROMOCIONAN</strong></p>
                 <ul>
-                    <?php foreach ($data['resultado']['alumnos_promocionan'] as $alumno) { ?>
+                    <?php foreach ($data['resultado']['alumnos_no_promocionan'] as $alumno) { ?>
                         <li><?php echo $alumno ?></li>
                     <?php } ?>
                 </ul>

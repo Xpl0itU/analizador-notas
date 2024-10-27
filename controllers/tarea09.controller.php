@@ -1,13 +1,24 @@
 <?php
+declare(strict_types=1);
 
-function analyseData(mixed $data): array
-{
+function analyseData(mixed $data): array {
     $ret = array();
     $notaMediaTrimestres = array();
+    $suspensosPorAlumno = array();
+
     foreach ($data as $asignatura => $alumnos) {
         foreach ($alumnos as $nombreAlumno => $notas) {
             $notaMediaTrimestres[$asignatura][$nombreAlumno] = round(array_sum($notas) / count($notas), 2);
+
+            if (!isset($suspensosPorAlumno[$nombreAlumno])) {
+                $suspensosPorAlumno[$nombreAlumno] = 0;
+            }
+
+            if ($notaMediaTrimestres[$asignatura][$nombreAlumno] < 5) {
+                $suspensosPorAlumno[$nombreAlumno]++;
+            }
         }
+
         $ret['tabla'][$asignatura]['media'] = array_sum($notaMediaTrimestres[$asignatura]) / count($notaMediaTrimestres[$asignatura]);
         $ret['tabla'][$asignatura]['suspensos'] = array_filter($notaMediaTrimestres[$asignatura], function (int|float $item) {
             return $item < 5;
@@ -17,15 +28,33 @@ function analyseData(mixed $data): array
         });
         $ret['tabla'][$asignatura]['max'] = ['alumno' => 'nobody', 'nota' => null];
         $ret['tabla'][$asignatura]['min'] = ['alumno' => 'nobody', 'nota' => null];
+
         foreach ($notaMediaTrimestres[$asignatura] as $nombreAlumno => $notaMedia) {
             if ($notaMedia > $ret['tabla'][$asignatura]['max']['nota'] || $ret['tabla'][$asignatura]['max']['nota'] === null) {
-                $ret[$asignatura]['max'] = ['alumno' => $nombreAlumno, 'nota' => $notaMedia];
+                $ret['tabla'][$asignatura]['max'] = ['alumno' => $nombreAlumno, 'nota' => $notaMedia];
             }
             if ($notaMedia < $ret['tabla'][$asignatura]['min']['nota'] || $ret['tabla'][$asignatura]['min']['nota'] === null) {
                 $ret['tabla'][$asignatura]['min'] = ['alumno' => $nombreAlumno, 'nota' => $notaMedia];
             }
         }
     }
+
+    $ret['alumnos_todo_aprobado'] = array_keys(array_filter($suspensosPorAlumno, function($suspensos) {
+        return $suspensos === 0;
+    }));
+
+    $ret['alumnos_algun_suspenso'] = array_keys(array_filter($suspensosPorAlumno, function($suspensos) {
+        return $suspensos > 0;
+    }));
+
+    $ret['alumnos_promocionan'] = array_keys(array_filter($suspensosPorAlumno, function($suspensos) {
+        return $suspensos <= 1;
+    }));
+
+    $ret['alumnos_no_promocionan'] = array_keys(array_filter($suspensosPorAlumno, function($suspensos) {
+        return $suspensos >= 2;
+    }));
+
     return $ret;
 }
 

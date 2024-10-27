@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-function analyseData(mixed $data): array {
+function analyseData(mixed $data): array
+{
     $ret = array();
     $notaMediaTrimestres = array();
     $suspensosPorAlumno = array();
@@ -39,19 +40,19 @@ function analyseData(mixed $data): array {
         }
     }
 
-    $ret['alumnos_todo_aprobado'] = array_keys(array_filter($suspensosPorAlumno, function($suspensos) {
+    $ret['alumnos_todo_aprobado'] = array_keys(array_filter($suspensosPorAlumno, function ($suspensos) {
         return $suspensos === 0;
     }));
 
-    $ret['alumnos_algun_suspenso'] = array_keys(array_filter($suspensosPorAlumno, function($suspensos) {
+    $ret['alumnos_algun_suspenso'] = array_keys(array_filter($suspensosPorAlumno, function ($suspensos) {
         return $suspensos > 0;
     }));
 
-    $ret['alumnos_promocionan'] = array_keys(array_filter($suspensosPorAlumno, function($suspensos) {
+    $ret['alumnos_promocionan'] = array_keys(array_filter($suspensosPorAlumno, function ($suspensos) {
         return $suspensos <= 1;
     }));
 
-    $ret['alumnos_no_promocionan'] = array_keys(array_filter($suspensosPorAlumno, function($suspensos) {
+    $ret['alumnos_no_promocionan'] = array_keys(array_filter($suspensosPorAlumno, function ($suspensos) {
         return $suspensos >= 2;
     }));
 

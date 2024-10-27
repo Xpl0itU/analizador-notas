@@ -9,10 +9,10 @@ function analyseData(mixed $data): array
             $notaMediaTrimestres[$asignatura][$nombreAlumno] = round(array_sum($notas) / count($notas), 2);
         }
         $ret['tabla'][$asignatura]['media'] = array_sum($notaMediaTrimestres[$asignatura]) / count($notaMediaTrimestres[$asignatura]);
-        $ret['tabla'][$asignatura]['suspensos'] = array_filter($notaMediaTrimestres[$asignatura], function (int $item) {
+        $ret['tabla'][$asignatura]['suspensos'] = array_filter($notaMediaTrimestres[$asignatura], function (int|float $item) {
             return $item < 5;
         });
-        $ret['tabla'][$asignatura]['aprobados'] = array_filter($notaMediaTrimestres[$asignatura], function (int $item) {
+        $ret['tabla'][$asignatura]['aprobados'] = array_filter($notaMediaTrimestres[$asignatura], function (int|float $item) {
             return $item >= 5;
         });
         $ret['tabla'][$asignatura]['max'] = ['alumno' => 'nobody', 'nota' => null];

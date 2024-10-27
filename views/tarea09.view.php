@@ -6,7 +6,37 @@
 <!-- Content Row -->
 <?php if (isset($data['resultado'])) { ?>
     <div class="col-12 col-lg-6">
-        <div>
+        <div class="alert alert-success">
+            <p><strong>TODO APROBADO</strong></p>
+            <ul>
+            <?php foreach ($data['resultado']['alumnos_todo_aprobado'] as $alumno) { ?>
+                <li><?php echo $alumno ?></li>
+            <?php } ?>
+            </ul>
+        </div>
+        <div class="alert alert-warning">
+            <p><strong>UNA O MÁS SUSPENSAS</strong></p>
+            <ul>
+                <?php foreach ($data['resultado']['alumnos_algun_suspenso'] as $alumno) { ?>
+                    <li><?php echo $alumno ?></li>
+                <?php } ?>
+            </ul>
+        </div>
+        <div class="alert alert-info">
+            <p><strong>PROMOCIONAN</strong></p>
+            <ul>
+                <?php foreach ($data['resultado']['alumnos_promocionan'] as $alumno) { ?>
+                    <li><?php echo $alumno ?></li>
+                <?php } ?>
+            </ul>
+        </div>
+        <div class="alert alert-danger">
+            <p><strong>NO PROMOCIONAN</strong></p>
+            <ul>
+                <?php foreach ($data['resultado']['alumnos_promocionan'] as $alumno) { ?>
+                    <li><?php echo $alumno ?></li>
+                <?php } ?>
+            </ul>
         </div>
     </div>
     <div class="row">

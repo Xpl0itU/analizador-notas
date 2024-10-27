@@ -110,7 +110,7 @@ function checkData(mixed $data): array {
 }
 
 if (isset($_POST['datos'])) {
-    $parsed_data = json_decode(filter_var($_POST['datos'], FILTER_SANITIZE_SPECIAL_CHARS), associative: true);
+    $parsed_data = json_decode($_POST['datos'], associative: true);
     $data['errores'] = checkData($parsed_data);
     if ($parsed_data) {
         if (empty($data['errores'])) {

@@ -109,6 +109,13 @@
                         <textarea name="datos" class="form-control"></textarea>
                         <input type="submit" value="Enviar" name="enviar" class="btn btn-primary">
                     </div>
+                    <p class="text-danger"><?php if (isset($data['errores'])) {
+                            foreach ($data['errores'] as $error) {
+                                echo $error;
+                                ?>
+                                <br/>
+                            <?php }
+                        } ?></p>
                 </form>
             </div>
         </div>

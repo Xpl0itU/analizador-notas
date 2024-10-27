@@ -59,10 +59,63 @@ function analyseData(mixed $data): array
     return $ret;
 }
 
-if (isset($_POST['datos'])) { // TODO: Validate JSON data
-    $parsed_data = json_decode($_POST['datos'], associative: true);
+function checkData(mixed $data): array {
+    $errores = [];
+
+    if (!is_array($data)) {
+        $errores[] = 'El dato proporcionado no es un array válido';
+        return $errores;
+    }
+
+    if (empty($data)) {
+        $errores[] = 'No hay asignaturas en los datos';
+        return $errores;
+    }
+
+    foreach ($data as $asignatura => $alumnos) {
+        if (!is_array($alumnos)) {
+            $errores[] = "La asignatura '$asignatura' no contiene un array de alumnos válido";
+            continue;
+        }
+
+        if (empty($alumnos)) {
+            $errores[] = "La asignatura '$asignatura' no tiene alumnos";
+            continue;
+        }
+
+        foreach ($alumnos as $nombreAlumno => $notas) {
+            if (!is_string($nombreAlumno)) {
+                $errores[] = "En la asignatura '$asignatura' hay un nombre de alumno que no es texto";
+            }
+
+            if (!is_array($notas)) {
+                $errores[] = "El alumno '$nombreAlumno' en la asignatura '$asignatura' no tiene un array de notas válido";
+                continue;
+            }
+
+            foreach ($notas as $i => $nota) {
+                if (!is_numeric($nota)) {
+                    $errores[] = "La nota $i del alumno '$nombreAlumno' en la asignatura '$asignatura' no es un número";
+                    continue;
+                }
+
+                if ($nota < 0 || $nota > 10) {
+                    $errores[] = "La nota $i del alumno '$nombreAlumno' en la asignatura '$asignatura' no está entre 0 y 10";
+                }
+            }
+        }
+    }
+
+    return $errores;
+}
+
+if (isset($_POST['datos'])) {
+    $parsed_data = json_decode(filter_var($_POST['datos'], FILTER_SANITIZE_SPECIAL_CHARS), associative: true);
+    $data['errores'] = checkData($parsed_data);
     if ($parsed_data) {
-        $data['resultado'] = analyseData($parsed_data);
+        if (empty($data['errores'])) {
+            $data['resultado'] = analyseData($parsed_data);
+        }
     }
 }
 
